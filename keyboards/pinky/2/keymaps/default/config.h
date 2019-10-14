@@ -13,21 +13,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef PINKY_H
-#define PINKY_H
 
-#include "quantum.h"
+#pragma once
 
-#ifdef KEYBOARD_pinky_2
-  #include "2.h"
-#endif
+/* Select hand configuration */
 
-#ifdef KEYBOARD_pinky_3
-  #include "3.h"
-#endif
-
-#ifdef KEYBOARD_pinky_4
-  #include "4.h"
-#endif
-
-#endif
+#define TAPPING_FORCE_HOLD
+#define TAPPING_TERM 200
+#define RETRO_TAPPPING
