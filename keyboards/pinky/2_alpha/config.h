@@ -22,11 +22,11 @@
 #define DEVICE_VER      0x0001
 #define MANUFACTURER    tamanishi
 #define PRODUCT         Pinky
-#define DESCRIPTION     A macropad with 2 x 5 vertically staggered keys and 3 thumb keys
+#define DESCRIPTION     A macropad with 2 x 4 vertically staggered keys and 2 thumb keys
 
 /* key matrix size */
 #define MATRIX_ROWS 3
-#define MATRIX_COLS 5
+#define MATRIX_COLS 4
 
 /*
  * Keyboard Matrix Assignments
@@ -41,7 +41,7 @@
 #define MATRIX_ROW_PINS { D4, C6, D7 }
 
 // wiring of each half
-#define MATRIX_COL_PINS { F4, F5, F6, F7, B1 }
+#define MATRIX_COL_PINS { F4, F5, F6, F7 }
 
 #define UNUSED_PINS
 
