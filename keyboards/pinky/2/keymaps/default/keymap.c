@@ -37,6 +37,8 @@ enum custom_keycodes {
 #define KC_RAISE RAISE
 #define KC_ADJ  ADJUST
 
+#define LT_SPC LT(_ADJUST, KC_SPC)
+
 // There is no default layout actually.
 // Customize as much as you like.
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -46,7 +48,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|---------+---------+---------+---------+---------|
         KC_TAB,  KC_LEFT,  KC_DOWN, KC_RIGHT,  KC_PGDN,\
   //|---------+---------+---------+---------+---------|
-                          KC_RAISE, KC_LOWER,   KC_ADJ \
+                          KC_RAISE, KC_LOWER,   LT_SPC \
                       //`-----------------------------'
   ),
   [_LOWER] = LAYOUT(
