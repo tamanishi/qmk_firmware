@@ -30,7 +30,8 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   LADJUST,
-  RADJUST
+  RADJUST,
+  ARROW
 };
 
 #define ________ KC_TRNS
@@ -53,6 +54,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_LSFT,     KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,  KC_LADJ,     KC_RADJ,     KC_N,     KC_M,  KC_COMM,   KC_DOT,  KC_SLSH,  KC_QUOT,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
                                      KC_LALT, KC_LOWER,  KC_LGUI,   LT_SPC,      LT_SPC,  KC_RGUI, KC_RAISE,  KC_RALT \
+                                    //  KC_LALT, KC_LOWER,  KC_LGUI,   KC_SPC,      KC_SPC,  KC_RGUI, KC_RAISE,  KC_RALT
                                 //`---------------------------------------'  `---------------------------------------'
   ),
 
