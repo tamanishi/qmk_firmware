@@ -20,24 +20,29 @@
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
 #define _QWERTY 0
-#define _LOWER 3
-#define _RAISE 4
-#define _ADJUST 16
+#define _LOWER 1
+#define _RAISE 2
+#define _ADJUST 3
+#define _ARROW 4
 
-// Defines the keycodes used by our macros in process_record_user
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   LOWER,
   RAISE,
-  ADJUST
+  LADJUST,
+  RADJUST,
+  ARROW
 };
 
 #define ________ KC_TRNS
 #define XXXXXXXX KC_NO
 #define KC_LOWER LOWER
 #define KC_RAISE RAISE
-#define KC_ADJ   ADJUST
+#define KC_LADJ  LADJUST
+#define KC_RADJ  RADJUST
 #define KC_CTLTB CTL_T(KC_TAB)
+
+#define LT_SPC LT(_ARROW, KC_SPC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( \
@@ -48,9 +53,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
       KC_CTLTB,     KC_A,     KC_S,     KC_D,     KC_F,     KC_G,  KC_LCBR,     KC_RCBR,     KC_H,     KC_J,     KC_K,     KC_L,  KC_SCLN,  KC_QUOT,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-       KC_LSFT,     KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,   KC_ADJ,      KC_ADJ,     KC_N,     KC_M,  KC_COMM,   KC_DOT,  KC_SLSH,   KC_ENT,\
+       KC_LSFT,     KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,  KC_LADJ,     KC_RADJ,     KC_N,     KC_M,  KC_COMM,   KC_DOT,  KC_SLSH,   KC_ENT,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-                                     KC_LALT, KC_LOWER,  KC_LGUI,   KC_SPC,      KC_SPC,  KC_RGUI, KC_RAISE,  KC_RALT \
+                                     KC_LALT, KC_LOWER,  KC_LGUI,   LT_SPC,      LT_SPC,  KC_RGUI, KC_RAISE,  KC_RALT \
                                 //`---------------------------------------'  `---------------------------------------'
   ),
 
@@ -86,7 +91,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,---------------------------------------------------------------------.  ,---------------------------------------------------------------------.
       ________,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5, ________,    ________,    KC_F6,    KC_F7,    KC_F8,    KC_F9,   KC_F10, ________,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-      ________, ________, ________, ________, ________, ________, ________,    ________, ________, ________, ________,   KC_F11,   KC_F12, ________,\
+      ________,   KC_F11,   KC_F12, ________, ________, ________, ________,    ________, ________, ________, ________, ________, ________, ________,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
       ________, ________, ________, ________, ________, ________, ________,    ________,  KC_HOME,  KC_PGDN,  KC_PGUP,   KC_END, ________, ________,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
@@ -94,8 +99,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
                                     ________, ________, ________, ________,    ________, ________, ________, ________ \
                                 //`---------------------------------------'  `---------------------------------------'
+  ),
+
+  [_ARROW] = LAYOUT( \
+  //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------.
+      ________, ________, ________, ________, ________, ________, ________,    ________, ________, ________, ________, ________, ________, ________,\
+  //,---------------------------------------------------------------------.  ,---------------------------------------------------------------------|
+      ________, ________,    KC_UP, ________, ________, ________, ________,    ________, ________, ________, ________, ________, ________, ________,\
+  //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
+      ________,  KC_LEFT,  KC_DOWN, KC_RIGHT, ________, ________, ________,    ________,  KC_LEFT,  KC_DOWN,    KC_UP, KC_RIGHT, ________, ________,\
+  //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
+      ________, ________, ________, ________, ________, ________, ________,    ________, ________, ________, ________, ________, ________, ________,\
+  //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
+                                    ________, ________, ________, ________,    ________, ________, ________, ________ \
+                                //`---------------------------------------'  `---------------------------------------'
   )
 };
+
+static bool adjust_pressed = false;
+static uint16_t adjust_pressed_time = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
@@ -129,26 +151,41 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case ADJUST:
-        if (record->event.pressed) {
-          layer_on(_ADJUST);
-        } else {
-          layer_off(_ADJUST);
+    case LADJUST:
+      if (record->event.pressed) {
+        adjust_pressed = true;
+        adjust_pressed_time = record->event.time;
+        layer_on(_ADJUST);
+      } else {
+        layer_off(_ADJUST);
+        if (adjust_pressed && (TIMER_DIFF_16(record->event.time, adjust_pressed_time) < TAPPING_TERM)) {
+          register_code(KC_LBRACKET);
+          unregister_code(KC_LBRACKET);
         }
-        return false;
-        break;
+        adjust_pressed = false;
+      }
+      return false;
+      break;
+    case RADJUST:
+      if (record->event.pressed) {
+        adjust_pressed = true;
+        adjust_pressed_time = record->event.time;
+        layer_on(_ADJUST);
+      } else {
+        layer_off(_ADJUST);
+        if (adjust_pressed && (TIMER_DIFF_16(record->event.time, adjust_pressed_time) < TAPPING_TERM)) {
+          register_code(KC_RBRACKET);
+          unregister_code(KC_RBRACKET);
+        }
+        adjust_pressed = false;
+      }
+      return false;
+      break;
+    default:
+      if (record->event.pressed) {
+        adjust_pressed = false;
+      }
+      break;
   }
   return true;
-}
-
-void matrix_init_user(void) {
-
-}
-
-void matrix_scan_user(void) {
-
-}
-
-void led_set_user(uint8_t usb_led) {
-
 }

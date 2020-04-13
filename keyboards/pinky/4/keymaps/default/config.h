@@ -26,6 +26,5 @@
 
 #define USE_SERIAL_PD2
 
-#define TAPPING_FORCE_HOLD
-#define TAPPING_TERM 200
+#define TAPPING_TERM 110
 #define RETRO_TAPPPING
