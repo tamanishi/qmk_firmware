@@ -107,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 static bool adjust_pressed = false;
-static uint16_t adjust_pressed_time = 0;
+// static uint16_t adjust_pressed_time = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
@@ -144,11 +144,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LADJUST:
       if (record->event.pressed) {
         adjust_pressed = true;
-        adjust_pressed_time = record->event.time;
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
-        if (adjust_pressed && (TIMER_DIFF_16(record->event.time, adjust_pressed_time) < TAPPING_TERM)) {
+        if (adjust_pressed) {
           register_code(KC_LBRACKET);
           unregister_code(KC_LBRACKET);
         }
@@ -159,11 +158,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RADJUST:
       if (record->event.pressed) {
         adjust_pressed = true;
-        adjust_pressed_time = record->event.time;
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
-        if (adjust_pressed && (TIMER_DIFF_16(record->event.time, adjust_pressed_time) < TAPPING_TERM)) {
+        if (adjust_pressed) {
           register_code(KC_RBRACKET);
           unregister_code(KC_RBRACKET);
         }
