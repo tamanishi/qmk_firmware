@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#include "keymap_jp.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -40,22 +41,24 @@ enum custom_keycodes {
 #define KC_RAISE RAISE
 #define KC_LADJ  LADJUST
 #define KC_RADJ  RADJUST
-#define KC_CTLTB CTL_T(KC_TAB)
+
+#define KC_CTL_ES CTL_T(KC_MHEN)
+#define KC_CTL_KN CTL_T(KC_HENK)
 
 #define LT_SPC LT(_ARROW, KC_SPC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( \
   //,---------------------------------------------------------------------.  ,---------------------------------------------------------------------.
-        KC_ESC,     KC_1,     KC_2,     KC_3,     KC_4,     KC_5,  KC_LPRN,     KC_RPRN,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,  KC_BSPC,\
+        KC_ESC,     KC_1,     KC_2,     KC_3,     KC_4,     KC_5,  JP_LPRN,     JP_RPRN,     KC_6,     KC_7,     KC_8,     KC_9,     KC_0,  KC_BSPC,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-        KC_TAB,     KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,  KC_LBRC,     KC_RBRC,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,  KC_BSLS,\
+        KC_TAB,     KC_Q,     KC_W,     KC_E,     KC_R,     KC_T,  JP_LCBR,     JP_RCBR,     KC_Y,     KC_U,     KC_I,     KC_O,     KC_P,  KC_BSLS,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-      KC_CTLTB,     KC_A,     KC_S,     KC_D,     KC_F,     KC_G,  KC_LCBR,     KC_RCBR,     KC_H,     KC_J,     KC_K,     KC_L,  KC_SCLN,  KC_QUOT,\
+      KC_LCTRL,     KC_A,     KC_S,     KC_D,     KC_F,     KC_G,  JP_LBRC,     JP_RBRC,     KC_H,     KC_J,     KC_K,     KC_L,  KC_SCLN,   KC_ENT,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-       KC_LSFT,     KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,  KC_LADJ,     KC_RADJ,     KC_N,     KC_M,  KC_COMM,   KC_DOT,  KC_SLSH,   KC_ENT,\
+       KC_LSFT,     KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,  KC_LADJ,     KC_RADJ,     KC_N,     KC_M,  KC_COMM,   KC_DOT,  KC_SLSH,  KC_QUOT,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-                                     KC_LALT, KC_LOWER,  KC_LGUI,   LT_SPC,      LT_SPC,  KC_RGUI, KC_RAISE,  KC_RALT \
+                                     KC_LALT,  KC_LGUI,KC_CTL_ES,   LT_SPC,      LT_SPC,KC_CTL_KN, KC_RGUI,  KC_RALT \
                                 //`---------------------------------------'  `---------------------------------------'
   ),
 
@@ -89,13 +92,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_ADJUST] = LAYOUT( \
   //,---------------------------------------------------------------------.  ,---------------------------------------------------------------------.
-      ________,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5, ________,    ________,    KC_F6,    KC_F7,    KC_F8,    KC_F9,   KC_F10, ________,\
+        JP_GRV,    KC_F1,    KC_F2,    KC_F3,    KC_F4,    KC_F5, ________,    ________,    KC_F6,    KC_F7,    KC_F8,    KC_F9,   KC_F10,   KC_DEL,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-      ________,   KC_F11,   KC_F12, ________, ________, ________, ________,    ________, ________, ________, ________, ________, ________, ________,\
+      ________,   KC_F11,   KC_F12, ________, ________, ________, ________,    ________, ________, ________, ________,  JP_MINS,  JP_CIRC,   JP_YEN,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
       ________, ________, ________, ________, ________, ________, ________,    ________,  KC_HOME,  KC_PGDN,  KC_PGUP,   KC_END, ________, ________,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-      ________, ________, ________, ________, ________, ________, ________,    ________, ________, ________, ________, ________, ________, ________,\
+      ________, ________, ________, ________, ________, ________, ________,    ________, ________, ________, ________, ________,   JP_UNDS, ________,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
                                     ________, ________, ________, ________,    ________, ________, ________, ________ \
                                 //`---------------------------------------'  `---------------------------------------'
@@ -117,7 +120,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 static bool adjust_pressed = false;
-static uint16_t adjust_pressed_time = 0;
+static bool ctrl_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
@@ -154,11 +157,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case LADJUST:
       if (record->event.pressed) {
         adjust_pressed = true;
-        adjust_pressed_time = record->event.time;
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
-        if (adjust_pressed && (TIMER_DIFF_16(record->event.time, adjust_pressed_time) < TAPPING_TERM)) {
+        if (adjust_pressed) {
           register_code(KC_LBRACKET);
           unregister_code(KC_LBRACKET);
         }
@@ -169,17 +171,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case RADJUST:
       if (record->event.pressed) {
         adjust_pressed = true;
-        adjust_pressed_time = record->event.time;
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
-        if (adjust_pressed && (TIMER_DIFF_16(record->event.time, adjust_pressed_time) < TAPPING_TERM)) {
+        if (adjust_pressed) {
           register_code(KC_RBRACKET);
           unregister_code(KC_RBRACKET);
         }
         adjust_pressed = false;
       }
       return false;
+      break;
+    // implements CTL + H -> BS inside firmware
+    case KC_LCTRL:
+      if (record->event.pressed) {
+        ctrl_pressed = true;
+      } else {
+        ctrl_pressed = false;
+      }
+      break;
+    case KC_H:
+      if (ctrl_pressed) {
+        register_code(KC_BSPC);
+        unregister_code(KC_BSPC);
+        return false;
+      }
       break;
     default:
       if (record->event.pressed) {
