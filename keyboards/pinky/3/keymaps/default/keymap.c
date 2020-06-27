@@ -42,7 +42,12 @@ enum custom_keycodes {
 #define KC_RADJ  RADJUST
 #define KC_CTLTB CTL_T(KC_TAB)
 
+#define KC_KNA KC_LANG1
+#define KC_EIS KC_LANG2
+
 #define LT_SPC LT(_ARROW, KC_SPC)
+#define KC_LG_ES LGUI_T(KC_EIS)
+#define KC_RG_KN RGUI_T(KC_KNA)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT(
@@ -53,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
        KC_LSFT,     KC_Z,     KC_X,     KC_C,     KC_V,     KC_B,  KC_LADJ,     KC_RADJ,     KC_N,     KC_M,  KC_COMM,   KC_DOT,  KC_SLSH,  KC_QUOT,\
   //|---------+---------+---------+---------+---------+---------+---------|  |---------+---------+---------+---------+---------+---------+---------|
-                                     KC_LALT, KC_LOWER,  KC_LGUI,   LT_SPC,      LT_SPC,  KC_RGUI, KC_RAISE,  KC_RALT \
+                                     KC_LALT, KC_LOWER, KC_LG_ES,   LT_SPC,      LT_SPC, KC_RG_KN, KC_RAISE,  KC_RALT \
                                 //`---------------------------------------'  `---------------------------------------'
   ),
 
