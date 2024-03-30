@@ -1,18 +1,6 @@
-/* Copyright 2018 'Masayuki Sunahara'
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+// Copyright 2023 QMK
+// SPDX-License-Identifier: GPL-2.0-or-later
+
 #include QMK_KEYBOARD_H
 
 enum layer_names {
@@ -24,20 +12,32 @@ enum layer_names {
 };
 
 #define CTL_TAB CTL_T(KC_TAB)
-#define KC_KNA KC_LNG1
-#define KC_EIS KC_LNG2
-#define LT_SPC LT(_ARROW, KC_SPC)
-#define CMD_EISU LCMD_T(KC_EIS)
-#define CMD_KANA RCMD_T(KC_KNA)
+#define ARR_SPC LT(_ARROW, KC_SPC)
+#define KC_KANA KC_LNG1
+#define KC_EISU KC_LNG2
+#define CMD_EISU LCMD_T(KC_EISU)
+#define CMD_KANA RCMD_T(KC_KANA)
 #define ADJ_LBR LT(_ADJUST, KC_LBRC)
 #define ADJ_RBR LT(_ADJUST, KC_RBRC)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+    /*
+     * ┌───┬───┬───┬───┬───┬───┬───┐ ┌───┬───┬───┬───┬───┬───┬───┐
+     * │Esc│ Q │ W │ E │ R │ T │ ( │ │ ) │ Y │ U │ I │ O │ P │BS │
+     * ├───┼───┼───┼───┼───┼───┼───┤ ├───┼───┼───┼───┼───┼───┼───┤
+     * │Tab│ A │ S │ D │ F │ G │ { │ │ } │ H │ J │ K │ L │ : │Ent│
+     * ├───┼───┼───┼───┼───┼───┼───┤ ├───┼───┼───┼───┼───┼───┼───┤
+     * │Sft│ Z │ X │ C │ V │ B │ [ │ │ ] │ N │ M │ M │ , │ . │ ' │
+     * └───┴───┴───┼───┼───┼───┼───┤ ├───┼───┼───┼───┼───┴───┴───┘
+     *             │Opt│L1 │Cmd│Spc│ │Spc│Cmd│L2 │Opt│
+     *             └───┴───┴───┴───┘ └───┴───┴───┴───┘
+     */
+
     [_QWERTY] = LAYOUT_split_3x7_4(
         KC_ESC , KC_Q   , KC_W   , KC_E   , KC_R   , KC_T   , KC_LPRN,    KC_RPRN, KC_Y   , KC_U   , KC_I   , KC_O   , KC_P   , KC_BSPC,
         CTL_TAB, KC_A   , KC_S   , KC_D   , KC_F   , KC_G   , KC_LCBR,    KC_RCBR, KC_H   , KC_J   , KC_K   , KC_L   , KC_SCLN, KC_ENT ,
         KC_LSFT, KC_Z   , KC_X   , KC_C   , KC_V   , KC_B   , ADJ_LBR,    ADJ_RBR, KC_N   , KC_M   , KC_COMM, KC_DOT , KC_SLSH, KC_QUOT,
-                                   KC_LALT, MO(_LOWER),CMD_EISU,LT_SPC ,  LT_SPC ,CMD_KANA,MO(_RAISE), KC_RALT
+                                 KC_LALT, MO(_LOWER),CMD_EISU,ARR_SPC,    ARR_SPC ,CMD_KANA,MO(_RAISE),KC_RALT
     ),
     [_LOWER] = LAYOUT_split_3x7_4(
         KC_GRV , KC_1   , KC_2   , KC_3   , KC_4   , KC_5   , _______,    _______, KC_6   , KC_7   , KC_8   , KC_9   , KC_0   , KC_BSLS,
