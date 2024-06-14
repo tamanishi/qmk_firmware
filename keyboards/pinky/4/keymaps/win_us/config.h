@@ -24,8 +24,6 @@
 // #define MASTER_RIGHT
 // #define EE_HANDS
 
-#define USE_SERIAL_PD2
-
-#define TAPPING_FORCE_HOLD
-#define TAPPING_TERM 110
-#define RETRO_TAPPPING
+#define RETRO_TAPPING
+#define PERMISSIVE_HOLD
+#define TAPPING_TERM 100
