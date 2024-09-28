@@ -24,6 +24,6 @@
 // #define MASTER_RIGHT
 // #define EE_HANDS
 
-#define RETRO_TAPPING
+#define TAPPING_FORCE_HOLD
 #define PERMISSIVE_HOLD
-#define TAPPING_TERM 100
+#define TAPPING_TERM 120
