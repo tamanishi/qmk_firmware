@@ -1,11 +1,15 @@
 {
     "keyboard_name": "Pinky4",
     "manufacturer": "tamanishi",
+    "url": "https://github.com/tamanishi/qmk_firmware",
     "maintainer": "tamanishi",
     "usb": {
         "vid": "0x544E",
         "pid": "0x7034",
         "device_version": "0.0.1"
+    },
+    "features": {
+        "extrakey": true
     },
     "matrix_pins": {
         "cols": ["F4", "F5", "F6", "F7", "B1", "B3", "B2"],
@@ -13,11 +17,10 @@
     },
     "diode_direction": "COL2ROW",
     "split": {
-        "serial": {
-            "pin": "D2"
-        }
+        "soft_serial_pin": "D2"
     },
-    "development_board": "promicro",
+    "processor": "atmega32u4",
+    "bootloader": "caterina",
     "layout_aliases": {
         "LAYOUT": "LAYOUT_split_4x7_4"
     },
