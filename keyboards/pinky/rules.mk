@@ -1,1 +1,1 @@
-DEFAULT_FOLDER = pinky/3
+# This file intentionally left blank
